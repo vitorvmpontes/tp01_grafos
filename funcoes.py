@@ -118,6 +118,7 @@ def imprimeOpcoesMenu():
     print("7 - Determinar o raio do grafo")
     print("8 - Determinar o diâmetro do grafo")
     print("9 - Determinar o centro do grafo")
+    print("10 - Desenhar o grafo")
     print("13 - Sair")
     
 def menu():
@@ -186,6 +187,10 @@ def menu():
             print("----------------------------")
             print(f"Centro: {centro1}")   
             print("----------------------------") 
-            
+         
+        if(opcao == 10):
+            print("Carregando imagem...")
+            desenharGrafo(grafo)
+        
         if(opcao == 13):
             return 0
