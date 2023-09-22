@@ -122,7 +122,7 @@ def imprimeOpcoesMenu():
     print("13 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafo3.graphml"
+    arquivoGrafo = "grafosTeste/grafovini.graphml" 
     grafo = criarGrafo(arquivoGrafo)
     opcao = 0
     while(opcao != 13 ):
