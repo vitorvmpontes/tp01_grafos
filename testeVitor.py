@@ -46,3 +46,12 @@ print(f"Centro: {centro}")
 
 #Teste para a função de desenhar o grafo
 #funcoes.desenharGrafo(grafo)
+
+
+visitados1 = funcoes.buscaLargura(grafo,"0")
+print("Visitados:" + str(visitados1))
+
+naoVisitados = funcoes.arestasFora(grafo,"0")
+print("Arestas não visitadas:" + str(naoVisitados))
+
+#funcoes.MostrarArvoreBusca()

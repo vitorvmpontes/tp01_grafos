@@ -6,5 +6,7 @@
 install-dependencies:
 	pip install matplotlib
 	pip install networkx
+	pip install lxml
+
 
 .PHONY: install-dependencies

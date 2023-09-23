@@ -1,5 +1,6 @@
 import networkx as nx #Biblioteca necessária para criação dos grafos
 import matplotlib.pyplot as plt #Biblioteca necessária para plotar o grafo
+import lxml.etree as ET
 
 def criarGrafo(caminho_arquivo):
     try:
@@ -86,9 +87,63 @@ def centro(grafo):
         return None
 
 
-#Determinar a sequência de vértices visitados na busca em largura e informar a(s)
-#aresta(s) que não faz(em) parte da árvore de busca em largura. OBS: a árvore de
-#largura deve ser gerada também em formato GraphML.
+#Realiza a busca em largura
+def buscaLargura(grafo, ponto_partida):
+    arvore = nx.Graph()
+    fila = [ponto_partida]
+    visitados = set()
+    while fila:
+        vertice = fila.pop(0)
+        if vertice not in visitados:
+            visitados.add(vertice)
+            vizinhos = list(grafo.neighbors(vertice))
+            for vizinho in vizinhos:
+                if vizinho not in visitados:
+                    fila.append(vizinho)
+                    arvore.add_edge(vertice, vizinho)
+    SalvarArvoreGraphml(arvore)                
+    return visitados
+
+#Retorna as arestas fora da busca
+def arestasFora(grafo,ponto_partida):
+    arvore = nx.Graph()
+    fila = [ponto_partida]
+    visitados = set()
+    while fila:
+        vertice = fila.pop(0)
+        if vertice not in visitados:
+            visitados.add(vertice)
+            vizinhos = list(grafo.neighbors(vertice))
+            for vizinho in vizinhos:
+                if vizinho not in visitados:
+                    fila.append(vizinho)
+                    arvore.add_edge(vertice, vizinho)
+    return list(set(grafo.edges()) - set(arvore.edges()))
+
+#Salva a árvore em formato .graphml
+def SalvarArvoreGraphml(arvore):
+    graphml = ET.Element("graphml")
+    graph = ET.SubElement(graphml, "graph", id="G", edgedefault="directed")
+
+    for node in arvore.nodes():
+        ET.SubElement(graph, "node", id=str(node))
+
+    for edge in arvore.edges():
+        ET.SubElement(graph, "edge", source=str(edge[0]), target=str(edge[1]))
+
+    tree = ET.ElementTree(graphml)
+    tree.write("arvoresBusca/resultadoBusca.graphml", pretty_print=True)
+    
+#Mostrar arvore de busca
+def MostrarArvoreBusca():
+        
+        arvoreBusca = nx.read_graphml("arvoresBusca/resultadoBusca.graphml")
+        pos = nx.spring_layout(arvoreBusca)
+        nx.draw(arvoreBusca, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, font_color='black', font_weight='bold')
+        print("Carregando imagem...")
+        plt.show()    
+        
+
 #Determinar distância e caminho mínimo
 
 #Determinar a centralidade de proximidade C de um vértice x, dada por1:
