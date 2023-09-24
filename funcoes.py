@@ -262,5 +262,8 @@ def menu():
         if(opcao == 12):
             MostrarArvoreBusca()      
         
+        if(opcao <= 0 or opcao > 13):
+            print("[ERRO] Opção inválida, tente novamente!")
+        
         if(opcao == 13):
             return 0
