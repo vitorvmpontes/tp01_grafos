@@ -250,8 +250,9 @@ def menu():
             desenharGrafo(grafo)
             
         if(opcao == 11):
-            visitados1 = buscaLargura(grafo,"0")
-            naoVisitados = arestasFora(grafo,"0")
+            verticeAlvo = str(input("Digite o vértice desejado para iniciar a busca:"))
+            visitados1 = buscaLargura(grafo,verticeAlvo)
+            naoVisitados = arestasFora(grafo,verticeAlvo)
             print("")
             print("----------Resultado da Busca em Largura----------")
             print("Vértices visitados:" + str(visitados1))
