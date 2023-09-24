@@ -174,6 +174,8 @@ def imprimeOpcoesMenu():
     print("8 - Determinar o diâmetro do grafo")
     print("9 - Determinar o centro do grafo")
     print("10 - Desenhar o grafo")
+    print("11 - Realizar busca em largura")
+    print("12 - Mostrar árvore da busca em largura")
     print("13 - Sair")
     
 def menu():
@@ -246,6 +248,18 @@ def menu():
         if(opcao == 10):
             print("Carregando imagem...")
             desenharGrafo(grafo)
+            
+        if(opcao == 11):
+            visitados1 = buscaLargura(grafo,"0")
+            naoVisitados = arestasFora(grafo,"0")
+            print("")
+            print("----------Resultado da Busca em Largura----------")
+            print("Vértices visitados:" + str(visitados1))
+            print("Arestas não visitadas:" + str(naoVisitados))  
+            print("-------------------------------------------------")
+            print("")
+        if(opcao == 12):
+            MostrarArvoreBusca()      
         
         if(opcao == 13):
             return 0

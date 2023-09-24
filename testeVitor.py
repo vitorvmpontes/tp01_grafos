@@ -49,9 +49,9 @@ print(f"Centro: {centro}")
 
 
 visitados1 = funcoes.buscaLargura(grafo,"0")
-print("Visitados:" + str(visitados1))
+print("Vértices visitados:" + str(visitados1))
 
 naoVisitados = funcoes.arestasFora(grafo,"0")
 print("Arestas não visitadas:" + str(naoVisitados))
 
-#funcoes.MostrarArvoreBusca()
+funcoes.MostrarArvoreBusca()
