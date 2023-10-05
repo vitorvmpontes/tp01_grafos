@@ -10,14 +10,14 @@
 
 2) OBJETIVO:
 
-  O objetivo do trabalho é utilizar o pacote NetworkX (https://networkx.org/ ) para
-desenvolver um programa que implementa um conjunto de algoritmos para grafos não
-direcionados ponderados. As ponderações são valores reais que devem estar associados
-às arestas do grafo.
-  Entrada de dados: O grafo de entrada deve ser fornecido no formato GraphML
-(http://graphml.graphdrawing.org/index.html). Pode-se utilizar a ferramenta
-https://graphonline.ru/pt/ para construir um grafo visualmente e exportá-lo para o formato
-GraphML.
+   O objetivo do trabalho é utilizar o pacote NetworkX (https://networkx.org/ ) para
+ desenvolver um programa que implementa um conjunto de algoritmos para grafos não
+ direcionados ponderados. As ponderações são valores reais que devem estar associados
+ às arestas do grafo.
+   Entrada de dados: O grafo de entrada deve ser fornecido no formato GraphML
+ (http://graphml.graphdrawing.org/index.html). Pode-se utilizar a ferramenta
+ https://graphonline.ru/pt/ para construir um grafo visualmente e exportá-lo para o formato
+ GraphML.
 
 O programa desenvolvido deve ler um grafo e implementar funções para:
   - Retornar a ordem do grafo
