@@ -146,7 +146,7 @@ def MostrarArvoreBusca():
 
 #Determinar distância e caminho mínimo
 
-#Determinar a centralidade de proximidade C de um vértice x, dada por1:
+#Determinar a centralidade de proximidade C de um vértice x
 
 #Desenha o grafo na tela
 def desenharGrafo(grafo):
@@ -179,7 +179,7 @@ def imprimeOpcoesMenu():
     print("13 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafovini.graphml" 
+    arquivoGrafo = "grafosTeste/grafo1.graphml" 
     grafo = criarGrafo(arquivoGrafo)
     opcao = 0
     while(opcao != 13 ):
@@ -188,62 +188,62 @@ def menu():
         
         if (opcao == 1):
             ordem1 = ordem(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print("Ordem: " + str(ordem1))
-            print("----------------------------")
+            print("-------------------------------------")
             
         if (opcao == 2):
             tamanho1 = tamanho(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print("Tamanho: " + str(tamanho1))
-            print("----------------------------")
+            print("-------------------------------------")
             
         if (opcao == 3):
             verticeAlvo = str(input("Digite o vértice desejado:"))
             vizinhos = vizinhosDoVertice(grafo,verticeAlvo)  
-            print("----------------------------")
+            print("-------------------------------------")
             print(f"Vizinhos do vértice {verticeAlvo}")
             print(vizinhos)
-            print("----------------------------")
+            print("-------------------------------------")
               
         if (opcao == 4):
             verticeAlvo = str(input("Digite o vértice desejado:"))
             grau = CalcularGrau(grafo,verticeAlvo)     
-            print("----------------------------")
+            print("-------------------------------------")
             print("O grau do vértice " + str(verticeAlvo)+ " é: " + str(grau)) 
-            print("----------------------------")   
+            print("-------------------------------------")   
         
         if(opcao == 5):
             sequencia = SequenciaGraus(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print("Sequencia de graus:")
             print(sequencia)
-            print("----------------------------")
+            print("-------------------------------------")
      
         if(opcao == 6):
             verticeAlvo = str(input("Digite o vértice desejado"))
             excentricidade1 = excentricidade(grafo,verticeAlvo)
-            print("----------------------------")
+            print("-------------------------------------")
             print(f"Excentricidade do vertice {verticeAlvo}: {excentricidade1}")
-            print("----------------------------")
+            print("-------------------------------------")
             
         if(opcao == 7):
             raio1 = raio(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print(f"Raio: {raio1}")
-            print("----------------------------")
+            print("-------------------------------------")
             
         if(opcao == 8):    
             diametro1 = diametro(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print(f"Diâmetro: {diametro1}")
-            print("----------------------------")
+            print("-------------------------------------")
             
         if(opcao == 9):
             centro1 = centro(grafo)
-            print("----------------------------")
+            print("-------------------------------------")
             print(f"Centro: {centro1}")   
-            print("----------------------------") 
+            print("-------------------------------------") 
          
         if(opcao == 10):
             print("Carregando imagem...")
@@ -254,10 +254,12 @@ def menu():
             visitados1 = buscaLargura(grafo,verticeAlvo)
             naoVisitados = arestasFora(grafo,verticeAlvo)
             print("")
-            print("----------Resultado da Busca em Largura----------")
+            print("----------Resultado da Busca em Largura--------------------------------------")
+            print('\n')
             print("Vértices visitados:" + str(visitados1))
             print("Arestas não visitadas:" + str(naoVisitados))  
-            print("-------------------------------------------------")
+            print('\n')
+            print("-----------------------------------------------------------------------------")
             print("")
         if(opcao == 12):
             MostrarArvoreBusca()      
@@ -267,3 +269,4 @@ def menu():
         
         if(opcao == 13):
             return 0
+    
