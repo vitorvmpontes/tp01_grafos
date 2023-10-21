@@ -2,10 +2,10 @@
 
 1) INTEGRANTES DO GRUPO:                       
 
- - Vitor Vasconcelos de Melo Pontes (4255);  
- - Henrique Alves (4231);                    
- - Henrique Campos ();                       
- - Pedro Augusto ()                          
+ - Vitor Vasconcelos de Melo Pontes (4255);
+ - Henrique Alves (4231);         
+ - Henrique Campos;                       
+ - Pedro Augusto.                          
 
 
 2) OBJETIVO:

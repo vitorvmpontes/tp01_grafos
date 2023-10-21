@@ -1,0 +1,15 @@
+1 - Abra a pasta do projeto pelo terminal;
+
+2 - No caso de usuário Linux digite "make install-dependencies" , caso o sistema operacional utilizado seja Windows,
+entre no link https://pypi.org/ e baixe as bibliotecas necessárias (matplotlib e NetworkX e lxml);
+
+3 - Para executar o código basta digitar o comando "python3 main.py";
+
+OBSERVAÇÕES: 
+- Na pasta grafosTeste existem alguns grafos para que o usuário possa utlizar. Para mudar o grafo a ser utilizado, basta entrar no arquivo funcoes.py e dentro da função menu(), trocar o caminho para o arquivo de teste.
+
+- Caso o usuário escolha a opção de mostrar o grafo , ou mostrar a árvore de busca, o programa só continua quando a imagem é fechada.
+
+
+
+
