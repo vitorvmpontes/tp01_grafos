@@ -145,6 +145,28 @@ def MostrarArvoreBusca():
         
 
 #Determinar distância e caminho mínimo
+def distanciaMinimaDijkstra(grafo, noOrigem, noDestino):
+    if noOrigem not in grafo or noDestino not in grafo:
+        return None
+    try:
+        #Calcula a distância mínima usando o algoritmo de Dijkstra
+        distanciaMinima = nx.shortest_path_length(grafo, noOrigem, noDestino)
+        return distanciaMinima
+    except nx.NetworkXNoPath:
+        #Caso não exista um caminho entre os nós de origem e destino
+        raise float('inf')
+    
+def caminhoMinimoDijkstra(grafo, noOrigem, noDestino):
+    if noOrigem not in grafo or noDestino not in grafo:
+        return None
+    try:
+        #Calcula o caminho mínimo usando o algoritmo de Dijkstra
+        caminhoMinimo = nx.shortest_path(grafo, noOrigem, noDestino)
+        return caminhoMinimo
+    except nx.NetworkXNoPath:
+        #Caso não exista um caminho entre os nós de origem e destino
+        return []
+
 
 #Determinar a centralidade de proximidade C de um vértice x
 
@@ -176,13 +198,15 @@ def imprimeOpcoesMenu():
     print("10 - Desenhar o grafo")
     print("11 - Realizar busca em largura")
     print("12 - Mostrar árvore da busca em largura")
-    print("13 - Sair")
+    print("13 - Determinar distância e caminho mínimo")
+    print("14 - ")
+    print("15 - Sair")
     
 def menu():
     arquivoGrafo = "grafosTeste/grafo1.graphml" 
     grafo = criarGrafo(arquivoGrafo)
     opcao = 0
-    while(opcao != 13 ):
+    while(opcao != 15 ):
         imprimeOpcoesMenu()
         opcao = int(input("Digite uma opção:"))
         
@@ -262,11 +286,25 @@ def menu():
             print("-----------------------------------------------------------------------------")
             print("")
         if(opcao == 12):
-            MostrarArvoreBusca()      
+            MostrarArvoreBusca()
+
+        if(opcao==13):
+            VerticePartida = str(input("Digite o vértice de partida:"))
+            VerticeFim = str(input("Digite o vértice de chegada:"))
+            Distancia1 = distanciaMinimaDijkstra(grafo, VerticePartida, VerticeFim)
+            Caminho1 = caminhoMinimoDijkstra(grafo, VerticePartida, VerticeFim)
+            if Caminho1:
+                print("")
+                print("-------------------------------------------------")
+                print(f"Caminho: {Caminho1}")
+                print(f"Distancia: {Distancia1}")
+                print("-------------------------------------------------")
+            else:
+                print(f"Os vértices {VerticePartida} ou {VerticeFim} não pertecem ao grafo")          
         
-        if(opcao <= 0 or opcao > 13):
+        if(opcao <= 0 or opcao > 15):
             print("[ERRO] Opção inválida, tente novamente!")
         
-        if(opcao == 13):
+        if(opcao == 15):
             return 0
     
