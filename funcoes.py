@@ -169,6 +169,28 @@ def caminhoMinimoDijkstra(grafo, noOrigem, noDestino):
 
 
 #Determinar a centralidade de proximidade C de um vértice x
+def DeterminarCentralidade(grafo, vertice_x):
+    # Obtém o número de vértices no grafo
+    num_vertices = grafo.number_of_nodes()
+    
+    # Inicializa a soma das distâncias
+    soma_distancias = 0
+    
+    # Calcula a distância entre o vértice_x e todos os outros vértices no grafo
+    for outro_vertice in grafo.nodes():
+        if outro_vertice != vertice_x:
+            try:
+                distancia = nx.shortest_path_length(grafo, source=vertice_x, target=outro_vertice)
+                soma_distancias += distancia
+            except nx.NetworkXNoPath:
+                # Caso não exista um caminho entre os vértices, tratamos como uma distância infinita (conforme a fórmula)
+                soma_distancias += float('inf')
+    
+    # Calcula a centralidade de proximidade
+    centralidade = (num_vertices - 1) / soma_distancias
+    
+    return centralidade
+
 
 #Desenha o grafo na tela
 def desenharGrafo(grafo):
@@ -199,7 +221,7 @@ def imprimeOpcoesMenu():
     print("11 - Realizar busca em largura")
     print("12 - Mostrar árvore da busca em largura")
     print("13 - Determinar distância e caminho mínimo")
-    print("14 - ")
+    print("14 - Determinar a centralidade de proximidade C de um vértice x")
     print("15 - Sair")
     
 def menu():
@@ -302,6 +324,12 @@ def menu():
             else:
                 print(f"Os vértices {VerticePartida} ou {VerticeFim} não pertecem ao grafo")          
         
+        if opcao == 14:
+            vertice_x = str(input("Digite o vértice para calcular a centralidade de proximidade: "))
+            centralidade_x = DeterminarCentralidade(grafo, vertice_x)
+            print(f"A centralidade de proximidade do vértice {vertice_x} é {centralidade_x}\n\n")
+
+
         if(opcao <= 0 or opcao > 15):
             print("[ERRO] Opção inválida, tente novamente!")
         
