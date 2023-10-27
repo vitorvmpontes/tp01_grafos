@@ -327,7 +327,9 @@ def menu():
         if opcao == 14:
             vertice_x = str(input("Digite o vértice para calcular a centralidade de proximidade: "))
             centralidade_x = DeterminarCentralidade(grafo, vertice_x)
-            print(f"A centralidade de proximidade do vértice {vertice_x} é {centralidade_x}\n\n")
+            print("-------------------------------------------------")
+            print(f"A centralidade de proximidade do vértice {vertice_x} é {centralidade_x}")
+            print("-------------------------------------------------")
 
 
         if(opcao <= 0 or opcao > 15):
