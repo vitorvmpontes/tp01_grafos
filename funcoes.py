@@ -1,14 +1,23 @@
 import networkx as nx #Biblioteca necessária para criação dos grafos
 import matplotlib.pyplot as plt #Biblioteca necessária para plotar o grafo
 import lxml.etree as ET
+import os
+
+def limparTela():
+    os.system('clear' if os.name == 'posix' else 'cls')
 
 def criarGrafo(caminho_arquivo):
     try:
         grafo = nx.read_graphml(caminho_arquivo)
         return grafo
+    except FileNotFoundError:
+        print(f"Arquivo não encontrado: {caminho_arquivo}")
+    except IOError as e:
+        print(f"Erro de E/S ao ler o arquivo: {e}")
     except Exception as e:
-        print("Ocorreu um erro ao criar o grafo:", e)
-        return None
+        print(f"Ocorreu um erro ao criar o grafo: {e}")
+    return None
+
 
 
 #Retornar a ordem do grafo
@@ -170,6 +179,11 @@ def caminhoMinimoDijkstra(grafo, noOrigem, noDestino):
 
 #Determinar a centralidade de proximidade C de um vértice x
 def DeterminarCentralidade(grafo, vertice_x):
+    # Verifica se o vértice_x pertence ao grafo
+    if vertice_x not in grafo.nodes():
+        print("O vértice fornecido não pertence ao grafo.")
+        return ('inf')  # Ou qualquer valor apropriado para indicar um erro
+
     # Obtém o número de vértices no grafo
     num_vertices = grafo.number_of_nodes()
     
@@ -203,10 +217,101 @@ def desenharGrafo(grafo):
 def ImprimeVertice(grafo):
     vertices = list(grafo.nodes)
     for vertice in vertices:
-        print(vertice)    
+        print(vertice) 
         
         
-        
+
+# Verificar se o grafo possui ciclo
+def possuiCiclo(grafo):
+    try:
+        ciclos = nx.algorithms.cycles.simple_cycles(grafo)
+        # Se houver algum ciclo, a função retorna True
+        return any(ciclos)
+    except nx.NetworkXNoCycle:
+        # Se não houver ciclo, a exceção NetworkXNoCycle será tratada e a função retornará False
+        return False
+    
+# Algoritmo de Kruskal
+def kruskal(grafo):
+    arestas = [(u, v, grafo[u][v].get('weight', 1)) for u, v in grafo.edges()]
+    arestas = sorted(arestas, key=lambda x: x[2])  # Ordena as arestas pelo peso
+    conjuntos = {vertice: {vertice} for vertice in grafo.nodes()}
+    arvore_geradora = nx.Graph()
+
+    for u, v, peso in arestas:
+        if conjuntos[u] != conjuntos[v]:
+            arvore_geradora.add_edge(u, v, weight=peso)
+            conjunto_uniao = conjuntos[u].union(conjuntos[v])
+            for vertice in conjunto_uniao:
+                conjuntos[vertice] = conjunto_uniao
+
+    return arvore_geradora
+
+def peso_total_arvore(arvore):
+    return sum(arvore[u][v]['weight'] for u, v in arvore.edges())
+
+# Determina a árvore geradora mínima do grafo
+def determinar_arvore_geradora_minima(grafo):
+    try:
+        arvore_geradora = kruskal(grafo)
+        peso_total = peso_total_arvore(arvore_geradora)
+
+        # Salvando a árvore geradora mínima no formato GraphML
+        SalvarArvoreGraphml(arvore_geradora, "grafosTeste/arvore_geradora_minima.graphml")
+
+        print("-------------------------------------")
+        print(f"Árvore geradora mínima salva em 'grafosTeste/arvore_geradora_minima.graphml'")
+        return peso_total
+    except Exception as e:
+        print(f"Ocorreu um erro ao determinar a árvore geradora mínima: {e}")
+        return None
+
+# Salva em um arquivo a árvore geradora mínima
+def SalvarArvoreGraphml(arvore, caminho):
+    graphml = ET.Element("graphml")
+    graph = ET.SubElement(graphml, "graph", id="G", edgedefault="undirected")
+
+    for node in arvore.nodes():
+        ET.SubElement(graph, "node", id=str(node))
+
+    for u, v in arvore.edges():
+        peso = arvore[u][v].get('weight', 1)
+        ET.SubElement(graph, "edge", source=str(u), target=str(v), weight=str(peso))
+
+    tree = ET.ElementTree(graphml)
+    tree.write(caminho)
+    
+# Eurística para determinar um conjunto estável de vértices
+def conjunto_estavel_heuristica(grafo):
+    conjunto_estavel = set()  # Conjunto que armazenará o conjunto estável
+    vizinhos_escolhidos = set()  # Vizinhos dos vértices escolhidos
+
+    # Enquanto houver vértices não escolhidos
+    while grafo:
+        # Encontrar o vértice com o menor número de vizinhos não escolhidos
+        vertice_min_vizinhos = min(grafo, key=lambda v: len(set(grafo.neighbors(v)) - vizinhos_escolhidos))
+
+        # Adicionar o vértice ao conjunto estável
+        conjunto_estavel.add(vertice_min_vizinhos)
+
+        # Adicionar os vizinhos do vértice ao conjunto de vizinhos escolhidos
+        vizinhos_escolhidos.update(grafo.neighbors(vertice_min_vizinhos))
+
+        # Remover o vértice e seus vizinhos do grafo
+        grafo.remove_nodes_from(set(grafo.neighbors(vertice_min_vizinhos)) | {vertice_min_vizinhos})
+
+    return conjunto_estavel
+
+# Define o emparelhamento máximo de um grafo
+def emparelhamentoMaximo(grafo):
+    try:
+        emparelhamento = nx.maximal_matching(grafo)
+        return emparelhamento
+    except nx.NetworkXError as e:
+        print(f"Ocorreu um erro ao calcular o emparelhamento máximo do grafo: {e}")
+        return None
+
+               
 def imprimeOpcoesMenu():
     print("1 - Retornar a ordem do grafo")
     print("2 - Retornar o tamanho do grafo")
@@ -222,15 +327,22 @@ def imprimeOpcoesMenu():
     print("12 - Mostrar árvore da busca em largura")
     print("13 - Determinar distância e caminho mínimo")
     print("14 - Determinar a centralidade de proximidade C de um vértice x")
-    print("15 - Sair")
+    print("15 - Verificar se o grafo possui ciclo")
+    print("16 - Encontrar o menor ciclo")
+    print("17 - Determinar a árvore geradora mínima de um grafo")
+    print("18 - Determinar um conjunto estável de vértices de um grafo por meio de uma heurística")
+    print("19 - Determinar o emparelhamento máximo em um grafo")
+    print("20 - Sair")
     
 def menu():
     arquivoGrafo = "grafosTeste/grafo1.graphml" 
     grafo = criarGrafo(arquivoGrafo)
+    grafo_original = grafo.copy() # Crie uma cópia do grafo original para que o original não seja afetado
     opcao = 0
-    while(opcao != 15 ):
+    while(opcao != 20 ):
         imprimeOpcoesMenu()
         opcao = int(input("Digite uma opção:"))
+        limparTela()
         
         if (opcao == 1):
             ordem1 = ordem(grafo)
@@ -327,14 +439,52 @@ def menu():
         if opcao == 14:
             vertice_x = str(input("Digite o vértice para calcular a centralidade de proximidade: "))
             centralidade_x = DeterminarCentralidade(grafo, vertice_x)
-            print("-------------------------------------------------")
-            print(f"A centralidade de proximidade do vértice {vertice_x} é {centralidade_x}")
-            print("-------------------------------------------------")
-
-
-        if(opcao <= 0 or opcao > 15):
-            print("[ERRO] Opção inválida, tente novamente!")
+            print(f"\n\nA centralidade de proximidade do vértice {vertice_x} é {centralidade_x}\n\n")
+            
+        if opcao == 15:
+            temCiclo = possuiCiclo(grafo)
+            if temCiclo:
+                print("-------------------------------------")
+                print("O grafo possui ciclo.")
+                print("-------------------------------------")
+            else:
+                print("-------------------------------------")
+                print("O grafo não possui ciclo.")
+                print("-------------------------------------")
         
-        if(opcao == 15):
+        if opcao == 16:
+            print("---------------------------------------")
+            print("EM CONSTRUÇÃO!")
+            print("---------------------------------------")
+        
+        if opcao == 17:
+            peso_total = determinar_arvore_geradora_minima(grafo)
+            if peso_total is not None:
+                print(f"Peso total da árvore geradora mínima: {peso_total}")
+                print("---------------------------------------")
+                            
+        if opcao == 18:
+            grafo = grafo_original.copy()
+            print("---------------------------------------")
+            conjunto_resultante = conjunto_estavel_heuristica(grafo)
+            print("Conjunto Estável Encontrado:", conjunto_resultante)
+            print("---------------------------------------")
+            
+        if opcao == 19:
+            grafo = grafo_original.copy()
+            if grafo:
+                emparelhamento = emparelhamentoMaximo(grafo)
+                if emparelhamento:
+                    print("-------------------------------------")
+                    print("Emparelhamento máximo:")
+                    print(emparelhamento)
+                    print("---------------------------------------")
+            
+        if opcao == 20:
             return 0
-    
+        
+        if(opcao <= 0 or opcao > 20):
+            print("---------------------------------------")
+            print("[ERRO] Opção inválida, tente novamente!")
+            print("---------------------------------------")
+            
