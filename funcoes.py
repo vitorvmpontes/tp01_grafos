@@ -153,6 +153,14 @@ def MostrarArvoreBusca():
         plt.show()    
         
 
+def mostrarArvoreGeradoraMinima():
+
+    arvoreGeradora = nx.read_graphml("grafosTeste/arvore_geradora_minima.graphml")
+    pos = nx.spring_layout(arvoreGeradora)
+    nx.draw(arvoreGeradora, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, font_color='black',font_weight='bold')
+    print("Carregando imagem...")
+    plt.show()
+
 #Determinar distância e caminho mínimo
 def distanciaMinimaDijkstra(grafo, noOrigem, noDestino):
     if noOrigem not in grafo or noDestino not in grafo:
@@ -261,6 +269,7 @@ def determinar_arvore_geradora_minima(grafo):
 
         print("-------------------------------------")
         print(f"Árvore geradora mínima salva em 'grafosTeste/arvore_geradora_minima.graphml'")
+        mostrarArvoreGeradoraMinima()
         return peso_total
     except Exception as e:
         print(f"Ocorreu um erro ao determinar a árvore geradora mínima: {e}")
@@ -311,6 +320,28 @@ def emparelhamentoMaximo(grafo):
         print(f"Ocorreu um erro ao calcular o emparelhamento máximo do grafo: {e}")
         return None
 
+def menorCicloComPesoMinimo(graph):
+    if not nx.get_edge_attributes(graph, 'weight'):
+        return "Arestas não têm atributo de peso definido"
+
+    menor_ciclo = None
+    menor_peso = float('inf')
+    ciclo_encontrado = False
+
+    for node in graph.nodes():
+        for cycle in nx.simple_cycles(graph):
+            if len(cycle) > 2 and node in cycle:
+                peso_ciclo = sum(graph[cycle[i]][cycle[i + 1]]['weight'] for i in range(len(cycle) - 1))
+                peso_ciclo += graph[cycle[-1]][cycle[0]]['weight']  # Adicionando o peso da última aresta ao primeiro nó
+                if peso_ciclo < menor_peso:
+                    menor_peso = peso_ciclo
+                    menor_ciclo = cycle
+                    ciclo_encontrado = True
+
+    if ciclo_encontrado:
+        return menor_ciclo
+    else:
+        return "Nenhum ciclo encontrado ou todos os ciclos são muito pequenos"
                
 def imprimeOpcoesMenu():
     print("1 - Retornar a ordem do grafo")
@@ -335,7 +366,7 @@ def imprimeOpcoesMenu():
     print("20 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafo1.graphml" 
+    arquivoGrafo = "grafosTeste/grafoPonderado.graphml"
     grafo = criarGrafo(arquivoGrafo)
     grafo_original = grafo.copy() # Crie uma cópia do grafo original para que o original não seja afetado
     opcao = 0
@@ -453,8 +484,9 @@ def menu():
                 print("-------------------------------------")
         
         if opcao == 16:
+            menorCiclo = menorCicloComPesoMinimo(grafo)
             print("---------------------------------------")
-            print("EM CONSTRUÇÃO!")
+            print(menorCiclo)
             print("---------------------------------------")
         
         if opcao == 17:
