@@ -321,11 +321,21 @@ def emparelhamentoMaximo(grafo):
         return None
 
 def menor_ciclo(G):
+  """
+  Encontra o menor ciclo em um grafo não dirigido ponderado.
+
+  Args:
+    G: O grafo não dirigido ponderado.
+
+  Returns:
+    O menor ciclo, ou None se o grafo não tiver ciclos ou se o grafo não for ponderado.
+  """
 
   if not nx.is_connected(G):
     return None
-  if not nx.is_weighted(G):
-      return "[ERRO] O grafo não é ponderado!"
+
+  if eh_ponderado(G) != 1:
+      return "O grafo não é ponderado!"
 
   # Inicializa o conjunto de vértices visitados.
 
@@ -347,6 +357,17 @@ def menor_ciclo(G):
 
 
 def _percorre_ciclo(G, u, visitados):
+  """
+  Percorre um ciclo em um grafo não dirigido ponderado.
+
+  Args:
+    G: O grafo não dirigido ponderado.
+    u: O vértice inicial do ciclo.
+    visitados: O conjunto de vértices visitados.
+
+  Returns:
+    O ciclo, ou None se não for encontrado um ciclo.
+  """
 
   visitados.add(u)
 
@@ -360,10 +381,18 @@ def _percorre_ciclo(G, u, visitados):
         v = w
         break
     else:
+      # Não há mais vértices adjacentes não visitados.
       if len(ciclo) > 1:
         return ciclo
       else:
         return None
+
+def eh_ponderado(G):
+
+  for u, v, d in G.edges(data=True):
+    if d is not None:
+      return 1
+  return 0
                
 def imprimeOpcoesMenu():
     print("1 - Retornar a ordem do grafo")
@@ -388,7 +417,7 @@ def imprimeOpcoesMenu():
     print("20 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafo1.graphml"
+    arquivoGrafo = "grafosTeste/grafoPonderado.graphml"
     grafo = criarGrafo(arquivoGrafo)
     grafo_original = grafo.copy() # Crie uma cópia do grafo original para que o original não seja afetado
     opcao = 0
