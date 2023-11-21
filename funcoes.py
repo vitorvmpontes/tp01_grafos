@@ -320,28 +320,50 @@ def emparelhamentoMaximo(grafo):
         print(f"Ocorreu um erro ao calcular o emparelhamento máximo do grafo: {e}")
         return None
 
-def menorCicloComPesoMinimo(graph):
-    if not nx.get_edge_attributes(graph, 'weight'):
-        return "Arestas não têm atributo de peso definido"
+def menor_ciclo(G):
 
-    menor_ciclo = None
-    menor_peso = float('inf')
-    ciclo_encontrado = False
+  if not nx.is_connected(G):
+    return None
+  if not nx.is_weighted(G):
+      return "[ERRO] O grafo não é ponderado!"
 
-    for node in graph.nodes():
-        for cycle in nx.simple_cycles(graph):
-            if len(cycle) > 2 and node in cycle:
-                peso_ciclo = sum(graph[cycle[i]][cycle[i + 1]]['weight'] for i in range(len(cycle) - 1))
-                peso_ciclo += graph[cycle[-1]][cycle[0]]['weight']  # Adicionando o peso da última aresta ao primeiro nó
-                if peso_ciclo < menor_peso:
-                    menor_peso = peso_ciclo
-                    menor_ciclo = cycle
-                    ciclo_encontrado = True
+  # Inicializa o conjunto de vértices visitados.
 
-    if ciclo_encontrado:
-        return menor_ciclo
+  visitados = set()
+
+  # Inicializa o menor ciclo encontrado.
+
+  menor_ciclo = []
+
+  # Percorre o grafo em busca de ciclos.
+
+  for u in G.nodes():
+    if u not in visitados:
+      ciclo = _percorre_ciclo(G, u, visitados)
+      if ciclo is not None and len(ciclo) > 1:
+        menor_ciclo = ciclo
+
+  return menor_ciclo
+
+
+def _percorre_ciclo(G, u, visitados):
+
+  visitados.add(u)
+
+  ciclo = [u]
+  v = u
+
+  while True:
+    for w in G.neighbors(v):
+      if w not in visitados:
+        ciclo.append(w)
+        v = w
+        break
     else:
-        return "Nenhum ciclo encontrado ou todos os ciclos são muito pequenos"
+      if len(ciclo) > 1:
+        return ciclo
+      else:
+        return None
                
 def imprimeOpcoesMenu():
     print("1 - Retornar a ordem do grafo")
@@ -366,7 +388,7 @@ def imprimeOpcoesMenu():
     print("20 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafoPonderado.graphml"
+    arquivoGrafo = "grafosTeste/grafo1.graphml"
     grafo = criarGrafo(arquivoGrafo)
     grafo_original = grafo.copy() # Crie uma cópia do grafo original para que o original não seja afetado
     opcao = 0
@@ -484,7 +506,7 @@ def menu():
                 print("-------------------------------------")
         
         if opcao == 16:
-            menorCiclo = menorCicloComPesoMinimo(grafo)
+            menorCiclo = menor_ciclo(grafo)
             print("---------------------------------------")
             print(menorCiclo)
             print("---------------------------------------")
