@@ -321,15 +321,6 @@ def emparelhamentoMaximo(grafo):
         return None
 
 def menor_ciclo(G):
-  """
-  Encontra o menor ciclo em um grafo não dirigido ponderado.
-
-  Args:
-    G: O grafo não dirigido ponderado.
-
-  Returns:
-    O menor ciclo, ou None se o grafo não tiver ciclos ou se o grafo não for ponderado.
-  """
 
   if not nx.is_connected(G):
     return None
@@ -357,17 +348,6 @@ def menor_ciclo(G):
 
 
 def _percorre_ciclo(G, u, visitados):
-  """
-  Percorre um ciclo em um grafo não dirigido ponderado.
-
-  Args:
-    G: O grafo não dirigido ponderado.
-    u: O vértice inicial do ciclo.
-    visitados: O conjunto de vértices visitados.
-
-  Returns:
-    O ciclo, ou None se não for encontrado um ciclo.
-  """
 
   visitados.add(u)
 
