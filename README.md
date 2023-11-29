@@ -29,8 +29,12 @@
      - Determinar o raio do grafo
      - Determinar o diâmetro do grafo
      - Determinar o centro do grafo
-     - Determinar a sequência de vértices visitados na busca em largura e informar a(s)
-       aresta(s) que não faz(em) parte da árvore de busca em largura. OBS: a árvore de
-       largura deve ser gerada também em formato GraphML.
+     - Determinar a sequência de vértices visitados na busca em largura e informar a(s) aresta(s) que não faz(em) parte da árvore de busca em largura. OBS: a árvore de largura deve ser gerada também em formato GraphML.
      - Determinar distância e caminho mínimo
      - Determinar a centralidade de proximidade C de um vértice x.
+     - Verificar se um grafo possui ciclo.
+     - Encontrar o menor ciclo (considerar a soma dos pesos de cada aresta do ciclo) em um grafo não dirigido ponderado (somente com pesos positivos).
+     -Determinar a árvore geradora mínima de um grafo.
+     - A árvore geradora mínima deve ser gerada no formato GraphML e o seu peso total deve ser retornado.
+     - Determinar um conjunto estável de vértices de um grafo por meio de uma heurística.
+     - Determinar o emparelhamento máximo em um grafo.
