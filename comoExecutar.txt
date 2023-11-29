@@ -10,6 +10,9 @@ OBSERVAÇÕES:
 
 - Caso o usuário escolha a opção de mostrar o grafo , ou mostrar a árvore de busca, o programa só continua quando a imagem é fechada.
 
+- A opção 16 só pode ser utilizada com um grafo ponderado. Existe um grafo ponderado criado na pasta de testes (grafoPonderado.graphml)
+
+
 
 
 

@@ -397,7 +397,7 @@ def imprimeOpcoesMenu():
     print("20 - Sair")
     
 def menu():
-    arquivoGrafo = "grafosTeste/grafoPonderado.graphml"
+    arquivoGrafo = "grafosTeste/grafo1.graphml"
     grafo = criarGrafo(arquivoGrafo)
     grafo_original = grafo.copy() # Crie uma cópia do grafo original para que o original não seja afetado
     opcao = 0
